@@ -30,3 +30,21 @@ func (c *OrderController) CreateOrder(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusCreated, createOrderResponse)
 }
+
+func (c *OrderController) GetOrderByOrderUserName(ctx *gin.Context) {
+	var getOrderByOrderUserNameRequest domain.GetOrderByOrderUserNameRequest
+	if err := ctx.ShouldBindJSON(&getOrderByOrderUserNameRequest); err != nil {
+		log.Println(err)
+		ctx.JSON(http.StatusBadRequest, cerr.NewCustomErrorWithCodeAndOrigin("Invalid request", cerr.InvalidRequestErrorCode, err))
+		return
+	}
+
+	getOrderByOrderUserNameResponse, err := c.OrderUsecase.GetOrderByOrderUserName(&getOrderByOrderUserNameRequest)
+	if err != nil {
+		log.Println(err)
+		ctx.JSON(http.StatusInternalServerError, cerr.NewCustomErrorWithCodeAndOrigin("Internal server error", cerr.InternalServerErrorCode, err))
+		return
+	}
+
+	ctx.JSON(http.StatusOK, getOrderByOrderUserNameResponse)
+}

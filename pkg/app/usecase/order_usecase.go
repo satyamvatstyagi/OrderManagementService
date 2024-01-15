@@ -42,3 +42,16 @@ func (u *OrderUsecase) CreateOrder(createOrderRequest *domain.CreateOrderRequest
 		OrderID: OrderID,
 	}, nil
 }
+
+func (u *OrderUsecase) GetOrderByOrderUserName(getOrderByOrderUserNameRequest *domain.GetOrderByOrderUserNameRequest) (*domain.GetOrderByOrderUserNameResponse, error) {
+	Order, err := u.OrderRepository.GetOrderByOrderUserName(html.EscapeString(strings.TrimSpace(getOrderByOrderUserNameRequest.UserName)))
+	if err != nil {
+		return nil, err
+	}
+
+	return &domain.GetOrderByOrderUserNameResponse{
+		OrderID:     Order.UUID.String(),
+		ProductName: Order.ProductName,
+		Quantity:    Order.Quantity,
+	}, nil
+}
