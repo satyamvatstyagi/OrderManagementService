@@ -46,6 +46,6 @@ func setupOrderRoutes(c *controller.OrderController, router *gin.Engine) {
 	orderService := router.Group("/order", gin.BasicAuth(gin.Accounts{username: password}))
 	{
 		orderService.POST("/", c.CreateOrder)
-		orderService.GET("/", c.GetOrderByOrderUserName)
+		orderService.GET("/:username", c.GetOrderByOrderUserName)
 	}
 }

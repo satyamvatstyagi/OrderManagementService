@@ -33,7 +33,7 @@ func (c *OrderController) CreateOrder(ctx *gin.Context) {
 
 func (c *OrderController) GetOrderByOrderUserName(ctx *gin.Context) {
 	var getOrderByOrderUserNameRequest domain.GetOrderByOrderUserNameRequest
-	if err := ctx.ShouldBindJSON(&getOrderByOrderUserNameRequest); err != nil {
+	if err := ctx.ShouldBindUri(&getOrderByOrderUserNameRequest); err != nil {
 		log.Println(err)
 		ctx.JSON(http.StatusBadRequest, cerr.NewCustomErrorWithCodeAndOrigin("Invalid request", cerr.InvalidRequestErrorCode, err))
 		return

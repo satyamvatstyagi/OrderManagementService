@@ -16,7 +16,7 @@ type CreateOrderResponse struct {
 }
 
 type GetOrderByOrderUserNameRequest struct {
-	UserName string `json:"user_name"`
+	UserName string `uri:"username" binding:"required"`
 }
 
 type GetOrderByOrderUserNameResponse struct {
