@@ -9,6 +9,7 @@ import (
 	"github.com/satyamvatstyagi/OrderManagementService/pkg/app/config"
 	"github.com/satyamvatstyagi/OrderManagementService/pkg/app/repository"
 	"github.com/satyamvatstyagi/OrderManagementService/pkg/app/usecase"
+	"go.elastic.co/apm/module/apmgin"
 )
 
 func Setup() {
@@ -30,6 +31,9 @@ func Setup() {
 	ginMode := os.Getenv("GIN_MODE")
 	gin.SetMode(ginMode)
 	router := gin.Default()
+
+	// Use Elastic APM middleware for Gin
+	router.Use(apmgin.Middleware(router))
 
 	// Setup the routes
 	setupOrderRoutes(OrderController, router)
