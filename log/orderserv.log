@@ -1,0 +1,11 @@
+{"level":"info","msg":"Logger initialized successfully","time":"2024-01-17T13:16:51+05:30"}
+{"level":"fatal","msg":"failed to connect to `host=localhost user=postgres database=mtn`: server error (FATAL: password authentication failed for user \"postgres\" (SQLSTATE 28P01))","time":"2024-01-17T13:16:51+05:30"}
+{"level":"info","msg":"Logger initialized successfully","time":"2024-01-17T13:51:18+05:30"}
+{"level":"fatal","msg":"failed to connect to `host=localhost user=postgres database=mtn`: server error (FATAL: password authentication failed for user \"postgres\" (SQLSTATE 28P01))","time":"2024-01-17T13:51:18+05:30"}
+{"level":"info","msg":"Logger initialized successfully","time":"2024-01-17T15:17:29+05:30"}
+{"level":"info","msg":"Logger initialized successfully","time":"2024-01-17T17:33:52+05:30"}
+{"level":"info","msg":"Logger initialized successfully","time":"2024-01-17T17:43:15+05:30"}
+{"level":"info","msg":"Logger initialized successfully","time":"2024-01-17T17:44:26+05:30"}
+{"level":"info","msg":"Logger initialized successfully","time":"2024-01-17T17:46:21+05:30"}
+{"level":"info","msg":"Logger initialized successfully","time":"2024-01-17T17:54:42+05:30"}
+{"level":"info","msg":"Logger initialized successfully","time":"2024-01-17T18:02:17+05:30"}

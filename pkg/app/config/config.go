@@ -16,7 +16,7 @@ func (c *Config) InitDb() *gorm.DB {
 	db, err := gorm.Open(postgres.Open(dsn))
 
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal(err.Error())
 	}
 
 	db.AutoMigrate(&models.Order{})

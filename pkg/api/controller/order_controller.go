@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/satyamvatstyagi/OrderManagementService/pkg/app/domain"
 	"github.com/satyamvatstyagi/OrderManagementService/pkg/common/cerr"
+	"go.elastic.co/apm/v2"
 )
 
 type OrderController struct {
@@ -32,6 +33,10 @@ func (c *OrderController) CreateOrder(ctx *gin.Context) {
 }
 
 func (c *OrderController) GetOrderByOrderUserName(ctx *gin.Context) {
+
+	span, _ := apm.StartSpan(ctx, "processOrder", "custom")
+	defer span.End()
+
 	var getOrderByOrderUserNameRequest domain.GetOrderByOrderUserNameRequest
 	if err := ctx.ShouldBindUri(&getOrderByOrderUserNameRequest); err != nil {
 		log.Println(err)
