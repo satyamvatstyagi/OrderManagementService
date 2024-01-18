@@ -9,7 +9,7 @@ import (
 	"github.com/satyamvatstyagi/OrderManagementService/pkg/app/config"
 	"github.com/satyamvatstyagi/OrderManagementService/pkg/app/repository"
 	"github.com/satyamvatstyagi/OrderManagementService/pkg/app/usecase"
-	"go.elastic.co/apm/module/apmgin"
+	"go.elastic.co/apm/module/apmgin/v2"
 )
 
 func Setup() {
