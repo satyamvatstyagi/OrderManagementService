@@ -24,7 +24,8 @@ func NewOrderRepository(database *gorm.DB) models.OrderRepository {
 }
 
 func (r *OrderRepository) CreateOrder(ctx context.Context, Order *models.Order) (string, error) {
-	_, ctx = instrumentation.TraceAPMRequest(ctx, "CreateOrder", consts.SpanTypeQueryExecution)
+	span, ctx := instrumentation.TraceAPMRequest(ctx, "CreateOrder", consts.SpanTypeQueryExecution)
+	defer span.End()
 	db := apmgorm.WithContext(ctx, r.database)
 	localTime := time.Now()
 	order := models.Order{
@@ -47,7 +48,8 @@ func (r *OrderRepository) CreateOrder(ctx context.Context, Order *models.Order) 
 }
 
 func (r *OrderRepository) GetOrderByOrderUserName(ctx context.Context, OrderUserName string) (*models.Order, error) {
-	_, ctx = instrumentation.TraceAPMRequest(ctx, "GetOrderByOrderUserName", consts.SpanTypeQueryExecution)
+	span, ctx := instrumentation.TraceAPMRequest(ctx, "GetOrderByOrderUserName", consts.SpanTypeQueryExecution)
+	defer span.End()
 	db := apmgorm.WithContext(ctx, r.database)
 	Order := &models.Order{}
 	if err := db.Where("user_name = ?", OrderUserName).First(&Order).Error; err != nil {
