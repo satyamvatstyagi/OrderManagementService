@@ -2,6 +2,7 @@ package repository
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/jackc/pgx/v5/pgconn"
@@ -11,6 +12,7 @@ import (
 	"github.com/satyamvatstyagi/OrderManagementService/pkg/common/consts"
 	"github.com/satyamvatstyagi/OrderManagementService/pkg/common/instrumentation"
 	"go.elastic.co/apm/module/apmgorm/v2"
+	"go.elastic.co/apm/v2"
 )
 
 type OrderRepository struct {
@@ -39,8 +41,10 @@ func (r *OrderRepository) CreateOrder(ctx context.Context, Order *models.Order) 
 	if err := db.Create(&order).Error; err != nil {
 		// Check if err is of type *pgconn.PgError and error code is 23505, which is the error code for unique_violation
 		if err, ok := err.(*pgconn.PgError); ok && err.Code == consts.UniqueViolation {
+			apm.CaptureError(ctx, fmt.Errorf("db error: %s", err.Error())).Send()
 			return "", cerr.NewCustomErrorWithCodeAndOrigin("Order already exists", cerr.InvalidRequestErrorCode, err)
 		}
+		apm.CaptureError(ctx, fmt.Errorf("db error: %s", err.Error())).Send()
 		return "", err
 	}
 
@@ -54,8 +58,10 @@ func (r *OrderRepository) GetOrderByOrderUserName(ctx context.Context, OrderUser
 	Order := &models.Order{}
 	if err := db.Where("user_name = ?", OrderUserName).First(&Order).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
+			apm.CaptureError(ctx, fmt.Errorf("db error: %s", err.Error())).Send()
 			return nil, cerr.NewCustomErrorWithCodeAndOrigin("Order not found", cerr.NotFoundErrorCode, err)
 		}
+		apm.CaptureError(ctx, fmt.Errorf("db error: %s", err.Error())).Send()
 		return nil, err
 	}
 	return Order, nil
