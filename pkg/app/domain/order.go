@@ -1,8 +1,10 @@
 package domain
 
+import "context"
+
 type OrderUsecase interface {
-	CreateOrder(createOrderRequest *CreateOrderRequest) (*CreateOrderResponse, error)
-	GetOrderByOrderUserName(getOrderByOrderUserNameRequest *GetOrderByOrderUserNameRequest) (*GetOrderByOrderUserNameResponse, error)
+	CreateOrder(ctx context.Context, createOrderRequest *CreateOrderRequest) (*CreateOrderResponse, error)
+	GetOrderByOrderUserName(ctx context.Context, getOrderByOrderUserNameRequest *GetOrderByOrderUserNameRequest) (*GetOrderByOrderUserNameResponse, error)
 }
 
 type CreateOrderRequest struct {

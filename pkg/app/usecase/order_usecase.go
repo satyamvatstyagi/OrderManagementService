@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"context"
 	"html"
 	"strings"
 
@@ -19,9 +20,9 @@ func NewOrderUsecase(OrderRepository models.OrderRepository) domain.OrderUsecase
 	}
 }
 
-func (u *OrderUsecase) CreateOrder(createOrderRequest *domain.CreateOrderRequest) (*domain.CreateOrderResponse, error) {
+func (u *OrderUsecase) CreateOrder(ctx context.Context, createOrderRequest *domain.CreateOrderRequest) (*domain.CreateOrderResponse, error) {
 	// Check if Order already exists
-	_, err := u.OrderRepository.GetOrderByOrderUserName(html.EscapeString(strings.TrimSpace(createOrderRequest.UserName)))
+	_, err := u.OrderRepository.GetOrderByOrderUserName(ctx, html.EscapeString(strings.TrimSpace(createOrderRequest.UserName)))
 	if err == nil {
 		return nil, cerr.NewCustomErrorWithCodeAndOrigin("Order already exists", cerr.InvalidRequestErrorCode, err)
 	}
@@ -33,7 +34,7 @@ func (u *OrderUsecase) CreateOrder(createOrderRequest *domain.CreateOrderRequest
 		UserName:    html.EscapeString(strings.TrimSpace(createOrderRequest.UserName)),
 	}
 
-	OrderID, err := u.OrderRepository.CreateOrder(Order)
+	OrderID, err := u.OrderRepository.CreateOrder(ctx, Order)
 	if err != nil {
 		return nil, err
 	}
@@ -43,8 +44,8 @@ func (u *OrderUsecase) CreateOrder(createOrderRequest *domain.CreateOrderRequest
 	}, nil
 }
 
-func (u *OrderUsecase) GetOrderByOrderUserName(getOrderByOrderUserNameRequest *domain.GetOrderByOrderUserNameRequest) (*domain.GetOrderByOrderUserNameResponse, error) {
-	Order, err := u.OrderRepository.GetOrderByOrderUserName(html.EscapeString(strings.TrimSpace(getOrderByOrderUserNameRequest.UserName)))
+func (u *OrderUsecase) GetOrderByOrderUserName(ctx context.Context, getOrderByOrderUserNameRequest *domain.GetOrderByOrderUserNameRequest) (*domain.GetOrderByOrderUserNameResponse, error) {
+	Order, err := u.OrderRepository.GetOrderByOrderUserName(ctx, html.EscapeString(strings.TrimSpace(getOrderByOrderUserNameRequest.UserName)))
 	if err != nil {
 		return nil, err
 	}

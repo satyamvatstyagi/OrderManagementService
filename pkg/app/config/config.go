@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/satyamvatstyagi/OrderManagementService/pkg/app/models"
-	"gorm.io/driver/postgres"
+	postgres "go.elastic.co/apm/module/apmgormv2/v2/driver/postgres"
 	"gorm.io/gorm"
 )
 

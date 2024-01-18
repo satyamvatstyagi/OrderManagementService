@@ -1,6 +1,7 @@
 package models
 
 import (
+	"context"
 	"time"
 
 	"github.com/gofrs/uuid"
@@ -18,6 +19,6 @@ type Order struct {
 }
 
 type OrderRepository interface {
-	CreateOrder(Order *Order) (string, error)
-	GetOrderByOrderUserName(OrderUserName string) (*Order, error)
+	CreateOrder(ctx context.Context, Order *Order) (string, error)
+	GetOrderByOrderUserName(ctx context.Context, OrderUserName string) (*Order, error)
 }

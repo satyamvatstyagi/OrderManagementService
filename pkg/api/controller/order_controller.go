@@ -21,7 +21,7 @@ func (c *OrderController) CreateOrder(ctx *gin.Context) {
 		return
 	}
 
-	createOrderResponse, err := c.OrderUsecase.CreateOrder(&createOrderRequest)
+	createOrderResponse, err := c.OrderUsecase.CreateOrder(ctx.Request.Context(), &createOrderRequest)
 	if err != nil {
 		log.Println(err)
 		ctx.JSON(http.StatusInternalServerError, cerr.NewCustomErrorWithCodeAndOrigin("Internal server error", cerr.InternalServerErrorCode, err))
@@ -39,7 +39,7 @@ func (c *OrderController) GetOrderByOrderUserName(ctx *gin.Context) {
 		return
 	}
 
-	getOrderByOrderUserNameResponse, err := c.OrderUsecase.GetOrderByOrderUserName(&getOrderByOrderUserNameRequest)
+	getOrderByOrderUserNameResponse, err := c.OrderUsecase.GetOrderByOrderUserName(ctx.Request.Context(), &getOrderByOrderUserNameRequest)
 	if err != nil {
 		log.Println(err)
 		ctx.JSON(http.StatusInternalServerError, cerr.NewCustomErrorWithCodeAndOrigin("Internal server error", cerr.InternalServerErrorCode, err))

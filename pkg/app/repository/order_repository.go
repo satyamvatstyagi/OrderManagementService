@@ -1,12 +1,14 @@
 package repository
 
 import (
+	"context"
 	"time"
 
 	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/satyamvatstyagi/OrderManagementService/pkg/app/models"
 	"github.com/satyamvatstyagi/OrderManagementService/pkg/common/cerr"
 	"github.com/satyamvatstyagi/OrderManagementService/pkg/common/consts"
+	"github.com/satyamvatstyagi/OrderManagementService/pkg/common/instrumentation"
 	"gorm.io/gorm"
 )
 
@@ -20,7 +22,8 @@ func NewOrderRepository(database *gorm.DB) models.OrderRepository {
 	}
 }
 
-func (r *OrderRepository) CreateOrder(Order *models.Order) (string, error) {
+func (r *OrderRepository) CreateOrder(ctx context.Context, Order *models.Order) (string, error) {
+	_, _ = instrumentation.TraceAPMRequest(ctx, "CreateOrder", consts.SpanTypeQueryExecution)
 	localTime := time.Now()
 	order := models.Order{
 		ProductName: Order.ProductName,
@@ -41,7 +44,8 @@ func (r *OrderRepository) CreateOrder(Order *models.Order) (string, error) {
 	return order.UUID.String(), nil
 }
 
-func (r *OrderRepository) GetOrderByOrderUserName(OrderUserName string) (*models.Order, error) {
+func (r *OrderRepository) GetOrderByOrderUserName(ctx context.Context, OrderUserName string) (*models.Order, error) {
+	_, _ = instrumentation.TraceAPMRequest(ctx, "GetOrderByOrderUserName", consts.SpanTypeQueryExecution)
 	Order := &models.Order{}
 	if err := r.database.Where("user_name = ?", OrderUserName).First(&Order).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
