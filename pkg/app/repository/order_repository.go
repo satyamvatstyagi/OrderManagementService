@@ -11,7 +11,7 @@ import (
 	"github.com/satyamvatstyagi/OrderManagementService/pkg/app/models"
 	"github.com/satyamvatstyagi/OrderManagementService/pkg/common/cerr"
 	"github.com/satyamvatstyagi/OrderManagementService/pkg/common/consts"
-	"github.com/satyamvatstyagi/OrderManagementService/pkg/common/instrumentation"
+	"github.com/satyamvatstyagi/OrderManagementService/pkg/common/mtnapm"
 	"go.elastic.co/apm/v2"
 )
 
@@ -39,7 +39,7 @@ func (r *OrderRepository) CreateOrder(ctx context.Context, Order *models.Order) 
 	statement := r.database.ToSQL(func(tx *gorm.DB) *gorm.DB {
 		return tx.Create(&order)
 	})
-	instrument := instrumentation.InitGormAPM(ctx, "postgresql", statement)
+	instrument := mtnapm.InitGormAPM(ctx, "postgresql", statement)
 	defer instrument.GetSpan().End()
 
 	if err := r.database.Create(&order).Error; err != nil {
@@ -62,7 +62,7 @@ func (r *OrderRepository) GetOrderByOrderUserName(ctx context.Context, OrderUser
 	statement := r.database.ToSQL(func(tx *gorm.DB) *gorm.DB {
 		return tx.Where("user_name = ?", OrderUserName).First(&Order)
 	})
-	instrument := instrumentation.InitGormAPM(ctx, "postgresql", statement)
+	instrument := mtnapm.InitGormAPM(ctx, "postgresql", statement)
 	defer instrument.GetSpan().End()
 
 	if err := r.database.Where("user_name = ?", OrderUserName).First(&Order).Error; err != nil {
