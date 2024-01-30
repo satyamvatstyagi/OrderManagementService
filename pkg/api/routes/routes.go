@@ -38,7 +38,7 @@ func Setup() {
 	// Setup the routes
 	setupOrderRoutes(OrderController, router)
 
-	err := router.Run(":8081")
+	err := router.Run(":8082")
 	if err != nil {
 		log.Fatal(err)
 	}
